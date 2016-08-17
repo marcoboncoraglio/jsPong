@@ -20,12 +20,37 @@ function Player(x, y){
 function Ball(x, y){
   this.posX = x;
   this.posY = y;
-  this.speedX = 2;
-  this.speedY = 4;
-  this.maxSpeed = 10;
+  this.startPosX = canvas.width/2;
+  this.startPosY = canvas.height/2;
   this.radius = 10;
 
+
+  this.init = function(){
+    this.speedX = Math.floor(Math.random() * 6) - 3;
+    this.speedY = (Math.floor(Math.random() * 6) - 3);
+
+    if(this.speedY == 0) {
+      this.speedY = 4;
+    }
+
+    this.posX = this.startPosX;
+    this.posY = this.startPosY;
+  }
+
   return this;
+}
+
+function sound(src) {
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");
+    this.sound.style.display = "none";
+
+    document.body.appendChild(this.sound);
+    this.play = function(){
+        this.sound.play();
+    }
 }
 
 var canvas = document.getElementById('canvas');
@@ -33,9 +58,11 @@ var ctx = canvas.getContext('2d');
 
 var player1= new Player(canvas.width/2 - playerWidth/2 , 50);
 var player2= new Player(canvas.width/2 - playerWidth/2, 525);
-var ball = new Ball(canvas.width/2, canvas.height/2);
+var ball = new Ball();
+var mySound = new sound("sounds/tick.mp3");
+ball.init();
 
-var xAxisDeflection = (ball.posX - player1.posX)*5/playerWidth;
+var xAxisDeflection = (ball.posX - player1.posX)*4/playerWidth;
 
 window.addEventListener("keydown", function(event){
   keys[event.keyCode] = true;
@@ -55,9 +82,40 @@ function collides(ball, player){
   if(ball.posY + ball.radius < player.posY)
     return false;
 
+  mySound.play();
   return true;
 }
 
+function drawBall(){
+  ctx.beginPath();
+  ctx.arc(ball.posX,ball.posY,ball.radius,0,2*Math.PI);
+  ctx.closePath();
+  ctx.fill();
+}
+
+function startGame(){
+
+  ctx.fillStyle = "red";
+  ctx.fillRect(0,0,canvas.width, canvas.height);
+  ctx.clearRect(10,10,canvas.width-20, canvas.height-20);
+  ctx.fillStyle = "black";
+  ctx.fillRect(player1.posX, player1.posY, playerWidth, playerHeight);
+  ctx.fillRect(player2.posX, player2.posY, playerWidth, playerHeight);
+  ctx.fillStyle = "black";
+  ctx.font = "30px Arial";
+  ctx.fillText("Ready?",canvas.width/2 - 50,canvas.height/2);
+
+
+  setTimeout(function () {
+        var updateGame = setInterval(update, 1000/80);
+    }, 1500);
+
+
+}
+
+function stopGame(){
+    clearInterval(updateGame);
+}
 
 function draw(){
   ctx.fillStyle = "red";
@@ -67,11 +125,9 @@ function draw(){
   ctx.fillRect(player1.posX, player1.posY, playerWidth, playerHeight);
   ctx.fillRect(player2.posX, player2.posY, playerWidth, playerHeight);
   ctx.fillStyle = "black";
-  ctx.beginPath();
-  ctx.arc(ball.posX,ball.posY,ball.radius,0,2*Math.PI);
-  ctx.closePath();
-  ctx.fill();
+  drawBall();
 }
+
 
 function update(){  //Way too long function
 
@@ -88,20 +144,20 @@ function update(){  //Way too long function
   if(keys[65]){
     if(player1.posX > 10){
     player1.posX -= player1.speed;
-  }
+    }
   }
   if(keys[37]){
     if(player2.posX > 10){
     player2.posX -= player2.speed;
-  }
+    }
   }
   if(keys[39]){
     if(player2.posX < 640){
     player2.posX += player2.speed;
+    }
   }
-  }
-  if(keys[32]){  //when spacebar is pressed reset the ball
-    ball = new Ball(canvas.width/2, canvas.height/2);
+  if(keys[32]){
+    ball.init();
   }
 
 
@@ -139,5 +195,4 @@ function update(){  //Way too long function
   draw();
 }
 
-
-setInterval(update, 1000/80);
+startGame();
