@@ -2,7 +2,7 @@
 
 var playerWidth = 150;
 var playerHeight = 25;
-var speedupAfterPlayerContact = 1.14;
+var speedupAfterPlayerContact = 1.1;
 
 var keys = {};  //used to detect keyboard input
 
@@ -22,7 +22,7 @@ function Ball(x, y){
   this.posY = y;
   this.speedX = 2;
   this.speedY = 4;
-  this.maxSpeed = 6;
+  this.maxSpeed = 10;
   this.radius = 10;
 
   return this;
@@ -74,6 +74,7 @@ function draw(){
 }
 
 function update(){  //Way too long function
+
   ball.posX += ball.speedX;
   ball.posY += ball.speedY;
 
@@ -103,49 +104,32 @@ function update(){  //Way too long function
     ball = new Ball(canvas.width/2, canvas.height/2);
   }
 
-  if(collides(ball, player1)){
+
+
+  if(collides(ball, player1)){  //X-Axis Speedup
     if(ball.posX - player1.posX > playerWidth/2){
-      if(ball.speedX <= Ball.maxSpeed){
       ball.speedX += xAxisDeflection;
-    }
     }
 
     if(ball.posX - player1.posX <= playerWidth/2){
-      if(ball.speedX <= Ball.maxSpeed){
       ball.speedX -= xAxisDeflection;
     }
-    }
 
-    //Speed Up
-
-    if(ball.speedY <= Ball.maxSpeed){
-      ball.speedY *= -(speedupAfterPlayerContact);
-    }
-    else{
-      ball.speedY *= (-1);
-    }
+    ball.speedY *= -(speedupAfterPlayerContact);  //Y-Axis Speedup
   }
 
-  if(collides(ball, player2)){
+  if(collides(ball, player2)){  //X-Axis Speedup
 
     if(ball.posX - player2.posX > playerWidth/2){
-      if(ball.speedX <= Ball.maxSpeed){
       ball.speedX += xAxisDeflection;
-    }
     }
 
     if(ball.posX - player2.posX <= playerWidth/2){
-      if(ball.speedX <= Ball.maxSpeed){
       ball.speedX -= xAxisDeflection;
     }
-    }
 
-    if(ball.speedY <= Ball.maxSpeed){
-      ball.speedY *= -(speedupAfterPlayerContact);
-    }
-    else{
-      ball.speedY *= (-1);
-    }
+    ball.speedY *= -(speedupAfterPlayerContact);  //Y-Axis Speedup
+
   }
 
   if(ball.posX <= 10 + ball.radius || ball.posX >= 790 - ball.radius){            //ball collides with wall
