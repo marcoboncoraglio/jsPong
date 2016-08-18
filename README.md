@@ -2,9 +2,9 @@
 
 My goal is to have a rudimental, functioning Pong Game
 
-
 ## TO DO:
 
+  * When the balls goes out of bounds instantly continue (no time to prepare for next point)
   * Hitboxes are very buggy
   * Sound effects for scoring(cheering maybe?)
   * System to keep track of score

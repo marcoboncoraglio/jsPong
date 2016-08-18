@@ -13,6 +13,7 @@ function Player(x, y){
     this.posX += incVal;
   }
   this.speed = 10;
+  this.score = 0;
 
   return this;
 }
@@ -30,7 +31,7 @@ function Ball(x, y){
     this.speedY = (Math.floor(Math.random() * 6) - 3);
 
     if(this.speedY == 0) {
-      this.speedY = 4;
+      this.speedY = 3;
     }
 
     this.posX = this.startPosX;
@@ -59,7 +60,8 @@ var ctx = canvas.getContext('2d');
 var player1= new Player(canvas.width/2 - playerWidth/2 , 50);
 var player2= new Player(canvas.width/2 - playerWidth/2, 525);
 var ball = new Ball();
-var mySound = new sound("sounds/tick.mp3");
+var tickSound = new sound("sounds/tick.mp3");
+var cheerSound = new sound("sounds/cheering.mp3");
 ball.init();
 
 var xAxisDeflection = (ball.posX - player1.posX)*4/playerWidth;
@@ -82,7 +84,7 @@ function collides(ball, player){
   if(ball.posY + ball.radius < player.posY)
     return false;
 
-  mySound.play();
+  tickSound.play();
   return true;
 }
 
@@ -105,11 +107,9 @@ function startGame(){
   ctx.font = "30px Arial";
   ctx.fillText("Ready?",canvas.width/2 - 50,canvas.height/2);
 
-
   setTimeout(function () {
         var updateGame = setInterval(update, 1000/80);
     }, 1500);
-
 
 }
 
@@ -126,6 +126,19 @@ function draw(){
   ctx.fillRect(player2.posX, player2.posY, playerWidth, playerHeight);
   ctx.fillStyle = "black";
   drawBall();
+  ctx.font = "12px Arial";
+  ctx.fillText("Player 1: " + player1.score, 20, 20);
+  ctx.fillText("Player 2: " + player2.score, 700, 570);
+}
+
+function scored(player){
+  cheerSound.play();
+    //setTimeout(function(){  //after score pause for a few seconds for the players to be able to recompose?
+    //  stopGame();
+    //}, 2500);
+  ball.init();
+  player.score++;
+  //startGame();
 }
 
 
@@ -157,7 +170,7 @@ function update(){  //Way too long function
     }
   }
   if(keys[32]){
-    ball.init();
+    stopGame(); //doesnt work yet
   }
 
 
@@ -190,6 +203,15 @@ function update(){  //Way too long function
 
   if(ball.posX <= 10 + ball.radius || ball.posX >= 790 - ball.radius){            //ball collides with wall
     ball.speedX *= (-1);
+  }
+
+  if(ball.posY > canvas.height){
+    scored(player1);
+    console.log("player 1 score: " + player1.score);
+  }
+  if(ball.posY < 0){
+    scored(player2);
+    console.log("player 2 score: " + player2.score);
   }
 
   draw();
