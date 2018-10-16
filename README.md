@@ -1,6 +1,7 @@
 # My attempt at learning the basics of Javascript and Html Canvas
 
 My goal is to have a rudimental, functioning Pong Game
+
 Check it out at https://marcoboncoraglio.github.io/jsPong/
 
 ## TO DO:
