@@ -61,7 +61,7 @@ var player1= new Player(canvas.width/2 - playerWidth/2 , 50);
 var player2= new Player(canvas.width/2 - playerWidth/2, 525);
 var ball = new Ball();
 var tickSound = new sound("sounds/tick.mp3");
-var cheerSound = new sound("sounds/cheering.mp3");
+//var cheerSound = new sound("sounds/cheering.mp3");
 ball.init();
 
 var xAxisDeflection = (ball.posX - player1.posX)*4/playerWidth;
@@ -132,7 +132,7 @@ function draw(){
 }
 
 function scored(player){
-  cheerSound.play();
+  //cheerSound.play();
     //setTimeout(function(){  //after score pause for a few seconds for the players to be able to recompose?
     //  stopGame();
     //}, 2500);
