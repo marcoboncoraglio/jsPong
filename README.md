@@ -1,12 +1,11 @@
-# My attempt at learning the basics of Javascript and Game Theory
+# My attempt at learning the basics of Javascript and Html Canvas
 
 My goal is to have a rudimental, functioning Pong Game
+Check it out at https://marcoboncoraglio.github.io/jsPong/
 
 ## TO DO:
 
-  * When the balls goes out of bounds instantly continue (no time to prepare for next point)
   * Hitboxes are very buggy
-  * Sound effects for scoring(cheering maybe?)
   * System to keep track of score
   * Background music?
   * Help button for how to play the game
