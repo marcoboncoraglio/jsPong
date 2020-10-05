@@ -1,4 +1,6 @@
-# My attempt at learning the basics of Javascript and Html Canvas
+# My very first web project (still here for purely because of nostalgia)
+
+### My attempt at learning the basics of Javascript and Html Canvas
 
 My goal is to have a rudimental, functioning Pong Game
 
